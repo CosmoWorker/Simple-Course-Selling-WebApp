@@ -3,7 +3,7 @@ const courseRouter=Router();
 const { purchaseModel, courseModel }=require("../db")
 const {userAuth} =require("../middlewares/user")
 
-courseRouter.post("/course/purchase", userAuth, async(req, res)=>{
+courseRouter.post("/purchase", userAuth, async(req, res)=>{
     const userId=req.userId;
     const courseId=req.body.courseId;
     await purchaseModel.create({

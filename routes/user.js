@@ -3,7 +3,7 @@ const jwt=require("jsonwebtoken");
 const brcypt=require("bcrypt");
 const userRouter=Router();
 const z = require("zod");
-const { userModel, purchaseModel }=require("../db");
+const { userModel, purchaseModel, courseModel }=require("../db");
 const { userAuth } = require("../middlewares/user");
 
 userRouter.post("/signup", async(req, res)=>{
@@ -59,8 +59,16 @@ userRouter.get("/purchases", userAuth, async(req, res)=>{
     const purchases=await purchaseModel.find({
         userId
     })
+
+    const courseData=await courseModel.find({
+        _id:{
+            $in : purchases.map(v=>v.coursesId.toString())
+        }
+    })
+
     res.json({
-        message: "Purchases"
+        purchases,
+        courseData
     })
 })
 

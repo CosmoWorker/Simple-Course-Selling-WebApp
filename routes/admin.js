@@ -75,7 +75,7 @@ adminRouter.put("/course", adminAuth, async(req, res)=>{
     const admindId= req.userId;
     const {title, description, imageUrl, price, courseId}=req.body;
 
-    const course=await courseModel.updateOne({
+    const updatedCourse=await courseModel.findOneAndUpdate({
         _id: courseId,
         creatorId: admindId
     },{
@@ -83,12 +83,11 @@ adminRouter.put("/course", adminAuth, async(req, res)=>{
         description: description,
         imageUrl: imageUrl,
         price: price
-    })
-    console.log(course)
+    }, {new : true})
 
     res.json({
         message: "Course Updated",
-        courseId: course._id
+        courseId: updatedCourse._id
     })
 })
 
